@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>CoverflowAltTab</AssemblyName>
+    <RootNamespace>CoverflowAltTab</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>resources\app_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  
+  <ItemGroup>
+   <None Include="resources\app_icon.ico" />
+</ItemGroup>
+ 
+<ItemGroup>
+  <Content Include="Resources\key.png" CopyToOutputDirectory="PreserveNewest" />
+  <Content Include="Resources\scene.png" CopyToOutputDirectory="PreserveNewest" />
+  <Content Include="Resources\Load.png" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
+
+
+  <ItemGroup>
+  <!-- Копировать AutoHotkey.exe в выходную папку -->
+  <Content Include="resources\AutoHotkey.exe">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+  
+   <ItemGroup>
+  <!-- Копировать BlockAltTab.ahk в выходную папку -->
+  <Content Include="resources\BlockAltTab.ahk">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+ <ItemGroup>
+  <Resource Include="resources\app_icon.ico" />
+</ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
+  </ItemGroup>
+
+<ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.5" />
+    <PackageReference Include="WindowsAPICodePack-Core" Version="1.1.1" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>

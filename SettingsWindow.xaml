@@ -1,0 +1,162 @@
+<Window x:Class="CoverflowAltTab.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="clr-namespace:System.Drawing;assembly=System.Drawing"
+        Title="Настройки 3D-сцены"
+        Height="720" Width="1280"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent"
+        AllowsTransparency="True"
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None">
+
+    <!-- Ресурсы стилей для кнопок -->
+    <Window.Resources>
+        <Style x:Key="WindowButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        
+    </Window.Resources>
+
+    <!-- Основной контейнер Grid для всего -->
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/> <!-- Верхняя панель -->
+            <RowDefinition Height="*"/> <!-- Основной контент -->
+        </Grid.RowDefinitions>
+
+        <!-- Фон с эффектом размытия -->
+        <Border Background="#CC808080" Grid.Row="0" Grid.RowSpan="2">
+            <Border.Effect>
+                <BlurEffect Radius="30"/> <!-- Радиус размытия -->
+            </Border.Effect>
+        </Border>
+
+        <!-- Верхняя панель с перетаскиванием -->
+        <Grid Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <!-- Кнопка для сворачивания окна -->
+                <Button Content="◯" Click="MinimizeButton_Click" Style="{StaticResource WindowButtonStyle}" Margin="5"/>
+                <!-- Кнопка для развертывания окна -->
+                <Button Content="❐" Click="MaximizeButton_Click" Style="{StaticResource WindowButtonStyle}" Margin="5"/>
+                <!-- Кнопка для закрытия окна -->
+                <Button Content="✖" Click="CloseButton_Click" Style="{StaticResource WindowButtonStyle}" Margin="5"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Основной контент -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45" /> <!-- Левая панель -->
+                <ColumnDefinition Width="5" /> <!-- Разделитель -->
+                <ColumnDefinition Width="*" /> <!-- Правая панель -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Левое меню -->
+            <StackPanel Grid.Column="0" Background="#F0F0F0" Margin="10" VerticalAlignment="Top">
+                <Button x:Name="SceneSettingsButton" Click="SceneSettingsButton_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=IconDataContext}">
+                                <Image Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding SceneIconPath}" />
+                            </StackPanel>
+                            <TextBlock Text="Настройки сцены" VerticalAlignment="Center" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Button x:Name="HotkeyButton" Click="HotkeysButton_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=IconDataContext}">
+                                <Image Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding HotkeyIconPath}" />
+                            </StackPanel>
+                            <TextBlock Text="Горячие клавиши" VerticalAlignment="Center" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Button x:Name="LoadButton" Click="SaveLoadButton_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                            <StackPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=IconDataContext}">
+                                <Image Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{Binding LoadIconPath}" />
+                            </StackPanel>
+                            <TextBlock Text="Сохранение и загрузка" VerticalAlignment="Center" Margin="5,0,0,0" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+
+            <!-- Разделитель между меню и контентом -->
+            <GridSplitter Grid.Column="1" Width="2" Background="Gray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <!-- Контент справа -->
+           <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
+            <Grid Margin="20">
+                <Grid x:Name="SceneSettingsPanel" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="Spacing X (расстояние между окнами)" Margin="0,0,0,5"/>
+                        <Slider Minimum="100" Maximum="1000" Value="{Binding SpacingX, Mode=TwoWay}" TickFrequency="50" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Side Angle (угол боковых окон)" Margin="0,15,0,5"/>
+                        <Slider Minimum="-90" Maximum="90" Value="{Binding SideAngle, Mode=TwoWay}" TickFrequency="5" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Side Scale 1 (масштаб ближайших боковых)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0.1" Maximum="2" Value="{Binding SideScale1, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Side Scale 2 (масштаб дальних боковых)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0.1" Maximum="2" Value="{Binding SideScale2, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Stack Spacing (расстояние между окнами в стопке по X)" Margin="0,15,0,5"/>
+                        <Slider Minimum="-300" Maximum="300" Value="{Binding StackSpacing, Mode=TwoWay}" TickFrequency="10" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Stack Depth (смещение по Z внутри стопки)" Margin="0,15,0,5"/>
+                        <Slider Minimum="-200" Maximum="200" Value="{Binding StackDepth, Mode=TwoWay}" TickFrequency="10" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Scene Depth (глубина всей сцены по Z)" Margin="0,15,0,5"/>
+                        <Slider Minimum="-2000" Maximum="500" Value="{Binding SceneDepth, Mode=TwoWay}" TickFrequency="50" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Stack Min Scale (масштаб центрального окна)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0.5" Maximum="2.0" Value="{Binding StackMinScale, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Stack Max Scale (масштаб дальних окон)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0.5" Maximum="3.0" Value="{Binding StackMaxScale, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Center Opacity (прозрачность центрального окна)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0" Maximum="1" Value="{Binding CenterOpacity, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Side Opacity (прозрачность боковых окон)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0" Maximum="1" Value="{Binding SideOpacity, Mode=TwoWay}" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                        <TextBlock Text="Fade Step (шаг затухания боковых окон)" Margin="0,15,0,5"/>
+                        <Slider Minimum="0" Maximum="0.5" Value="{Binding FadeStep, Mode=TwoWay}" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Раздел выбора горячих клавиш -->
+                <Grid x:Name="HotkeysPanel" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="Выберите горячую клавишу для переключения" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                        <ComboBox Name="HotkeyComboBox" Width="200" Margin="0,5,0,15" SelectedValue="{Binding SelectedHotkey, Mode=TwoWay}">
+                            <ComboBoxItem Content="CTRL+ALT+Q" />
+                            <ComboBoxItem Content="ALT+TAB" />
+                        </ComboBox>
+                        <Button Content="Сохранить горячую клавишу" Margin="5" Click="SaveHotkeyButton_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Раздел сохранения и загрузки -->
+                <Grid x:Name="SaveLoadPanel" Visibility="Collapsed">
+                    <StackPanel>
+                        <Button x:Name="AutoStartButton" Content="Enable Autostart" Width="200" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center" Click="AutoStartButton_Click"/>
+                        <Button Content="Сохранить настройки" Margin="5" Click="SaveButton_Click"/>
+                        <Button Content="Загрузить настройки" Margin="5" Click="LoadButton_Click"/>
+                        <Button Content="Сбросить настройки" Margin="5" Click="ResetButton_Click"/>
+                        <TextBlock>
+                            <Hyperlink Click="OpenFolderButton_Click">Открыть папку с конфигом</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+           </ScrollViewer>
+        </Grid>
+    </Grid>
+</Window>

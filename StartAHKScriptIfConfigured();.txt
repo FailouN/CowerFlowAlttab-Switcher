@@ -1,0 +1,32 @@
+StartAHKScriptIfConfigured();
+
+
+
+private void StartAHKScriptIfConfigured()
+        {
+            string selectedHotkey = SceneSettings.Instance.SelectedHotkey;  // Получаем выбранный хоткей
+            string ahkScriptPath = Path.Combine("resources", "BlockAltTab.ahk");  // Путь к AHK скрипту
+
+            if (selectedHotkey == "ALT+TAB" && File.Exists(ahkScriptPath))
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = Path.Combine("resources", "AutoHotkey.exe"),
+                        Arguments = ahkScriptPath + " /silent",  // Путь к AHK скрипту с флагом для скрытия
+                        CreateNoWindow = true, // Не показываем окно
+                        UseShellExecute = false,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ошибка при запуске AHK скрипта: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Скрипт не найден или путь не указан.");
+            }
+        }

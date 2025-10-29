@@ -1,0 +1,6 @@
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\CoverflowAltTab.pdb
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\Resources\key.png
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\Resources\scene.png
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\Resources\Load.png
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\resources\BlockAltTab.ahk
+C:\Users\bnryv\OneDrive\Рабочий стол\1\предрелиз\Build\CoverflowAltTab.exe
